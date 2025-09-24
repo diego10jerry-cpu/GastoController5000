@@ -8,21 +8,39 @@ import os
 # Cargamos librerias, tkinter, flet
 # Comenzaremos definiendo funciones 
 
-CSV_FILE = 'expenses.csv'
+# nombre del archivo donde se guardaran los gastos (en formato CSV)
+DATA_FILE = 'expenses.csv' 
 
-def load_expenses():
-    """Loads expense data from the CSV file."""
-    global expenses_df
-    if os.path.exists(CSV_FILE):
-        expenses_df = pd.read_csv(CSV_FILE)
-        # Ensure the 'Amount' column is numeric after loading
+# Función que cargara los datos de gastos desde el archivo CSV
+def load_expenses(): 
+    """Carga los datos de gastos desde el archivo CSV si existe; 
+    si no existe, crea una tabla vacía con las columnas necesarias."""
+
+    # Declaramos que vamos a usar una variable global llamada "expenses_df"
+    # (esto significa que la variable existirá fuera de la función también)
+    global expenses_df 
+
+    #verificamos si el archivo "expenses.csv existe en la carpeta actual"
+    if os.path.exists(DATA_FILE):
+        # Si el arcicho SÍ existe:
+        #   -lo leemos con pandas y lo guardamos en la variable "expenses_df"
+        expenses_df = pd.read_csv(DATA_FILE)
+
+        #Aseguramos que la columna "Amount" (monto) contenga números
+        #   - pd.to_numeric convierte los valores a números
+        #   - errors='coerce' significa: si hay algo que no es número (como texto),
+        #       cámbialo a "valor nulo" en vez de fallar
         expenses_df['Amount'] = pd.to_numeric(expenses_df['Amount'], errors='coerce')
+
     else:
+        # Si el archivo no existe: 
+        #   - creamos un dataframe vacío (una tabla sin filas)
+        #   - pero con las columnas que necesitamos: 'Product', 'Category', 'Amount', 'Date'
         expenses_df = pd.DataFrame(columns=['Product', 'Category', 'Amount', 'Date'])
 
 def save_expenses():
     """Saves expense data to the CSV file."""
-    expenses_df.to_csv(CSV_FILE, index=False)
+    expenses_df.to_csv(DATA_FILE, index=False)
 
 def update_pie_chart():
     """Updates the pie chart with current expense data."""
