@@ -4,7 +4,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 import os
 
-# GastoController5000
+# Proyecto GastoController5000
+# Cargamos librerias, tkinter, flet
+# Comenzaremos definiendo funciones 
+
 CSV_FILE = 'expenses.csv'
 
 def load_expenses():
